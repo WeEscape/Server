@@ -2,10 +2,11 @@ import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import Helmet from 'helmet';
+import { config } from './config';
 async function dobbyServer() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger();
-  const port = 8080;
+  const port = config.server.port;
 
   app.use(Helmet());
   app.useGlobalPipes(
@@ -20,7 +21,7 @@ async function dobbyServer() {
     methods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'],
     credentials: true,
   });
-  await app.listen(8080);
+  await app.listen(port);
   logger.log(`server is running, on port ${port}`);
 }
 dobbyServer();
