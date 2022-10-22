@@ -1,0 +1,45 @@
+version: '3'
+services:
+  rdbms:
+    container_name: rdbms
+    image: mariadb:10
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - rdbms:/var/lib/mysql
+      - ./docker/rdbms/initdb:/docker-entrypoint-initdb.d
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${RDBMS_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${RDBMS_DATABASE}
+  api:
+    container_name: api
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    depends_on:
+      - rdbms
+    volumes:
+      - .:/app
+      - /app/api/node_modules
+    env_file:
+      - .env
+    environment:
+      - THIS_API_SERVER_PORT=${THIS_API_SERVER_PORT}
+      - RDBMS_HOST=${RDBMS_HOST}
+      - RDBMS_USER=${RDBMS_USER}
+      - RDBMS_PASSWORD=${RDBMS_PASSWORD}
+      - RDBMS_DATABSE=${RDBMS_DATABASE}
+  proxy:
+    container_name: proxy
+    build:
+      dockerfile: Dockerfile
+      context: ./docker/proxy
+    ports:
+      - 3000:80
+    depends_on:
+      - api
+volumes:
+  rdbms:
