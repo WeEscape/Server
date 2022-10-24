@@ -1,14 +1,26 @@
-import { ValidationPipe, Logger } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import Helmet from 'helmet';
 import { config } from './config';
+
+declare const module: any;
+
 async function dobbyServer() {
   const app = await NestFactory.create(AppModule);
-  const logger = new Logger();
-  const port = config.server.port;
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 
   app.use(Helmet());
+  app.enableCors({
+    origin: true,
+    methods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'],
+    credentials: true,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -16,12 +28,7 @@ async function dobbyServer() {
       transform: true,
     }),
   );
-  app.enableCors({
-    origin: true,
-    methods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE'],
-    credentials: true,
-  });
-  await app.listen(port);
-  logger.log(`server is running, on port ${port}`);
+
+  await app.listen(config.server.port);
 }
 dobbyServer();
