@@ -31,3 +31,58 @@
   ```
   docker-compose down
   ```
+
+```
+server
+│  
+├─ api
+│  ├─ .eslintrc.js
+│  ├─ .gitignore
+│  ├─ .prettierrc
+│  ├─ Dockerfile
+│  ├─ README.md
+│  ├─ nest-cli.json
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ src
+│  │  ├─ app.module.ts
+│  │  ├─ app.service.ts
+│  │  ├─ config
+│  │  │  └─ index.ts
+│  │  ├─ main.ts
+│  │  ├─ task
+│  │  │  ├─ controller
+│  │  │  │  └─ task.controller.ts
+│  │  │  ├─ service
+│  │  │  │  └─ tesk.service.ts
+│  │  │  └─ task.module.ts
+│  │  └─ user
+│  │     ├─ controller
+│  │     │  └─ user.controller.ts
+│  │     ├─ service
+│  │     │  └─ user.service.ts
+│  │     ├─ user.entity.ts
+│  │     └─ user.module.ts
+│  │  
+│  ├─ tsconfig.build.json
+│  ├─ tsconfig.json
+│  └─ webpack-hmr.config.js
+│  
+├─ docker
+│  ├─ proxy
+│  │  ├─ Dockerfile
+│  │  └─ nginx.conf
+│  └─ rdbms
+│     ├─ conf
+│     │  └─ my.cnf
+│     └─ initdb
+│        └─ create_database.sql
+│  
+├─ src
+├─ .gitignore
+├─ docker-compose.dev.yml
+├─ docker-compose.prod.yml
+├─ docker-compose.yml
+└─ README.md
+
+```
