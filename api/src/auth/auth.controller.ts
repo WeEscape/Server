@@ -20,14 +20,10 @@ export class AuthController {
   @Get('/callback/kakao')
   async login(@Query() query: any, @Response() res): Promise<any> {
     try {
-      //   const { code, url } = body;
-      //   if (!(code || url))
-      //     return res.send('로그인 정보가 없습니다.').status(403);
-      console.log(query.code);
-      res.send('로그인 정보가 없습니다.');
+      if (!query) return res.send('로그인 정보가 없습니다.').status(403);
       const social = await this.authServive.kakaologin(query.code);
     } catch (err) {
-      console.log(err);
+      res.send(err);
     }
   }
 }

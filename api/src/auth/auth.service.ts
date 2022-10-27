@@ -16,8 +16,6 @@ export class AuthService {
       const { nickname, profile_image_url } =
         userInfo.data.kakao_account.profile;
       const { email } = userInfo.data.kakao_account;
-      console.log(access_token);
-      console.log(nickname, profile_image_url, email);
     } catch (err) {
       return err;
     }
