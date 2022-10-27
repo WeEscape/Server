@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const nodeExternals = require('webpack-node-externals');
 const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = function (options, webpack) {
   return {
@@ -21,6 +22,7 @@ module.exports = function (options, webpack) {
         name: options.output.filename,
         autoRestart: false,
       }),
+      new Dotenv(),
     ],
   };
 };
