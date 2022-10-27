@@ -26,10 +26,16 @@ export class TasksEntity extends BaseUpdateMasterEntity {
   @Column({ type: 'tinyint', name: 'notice_available', default: 1 })
   notice_available: number;
 
-  @Column({ type: 'datetime', name: 'ended_at', nullable: true, default: null })
+  @Column({
+    type: 'datetime',
+    name: 'ended_at',
+    precision: 6,
+    nullable: true,
+    default: null,
+  })
   end_repeat_at: Date | null;
 
-  @Column({ type: 'datetime', name: 'excute_at' })
+  @Column({ type: 'datetime', name: 'excute_at', precision: 6 })
   excute_at: Date;
 
   @Column({

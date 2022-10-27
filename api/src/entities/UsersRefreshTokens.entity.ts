@@ -12,6 +12,6 @@ export class UsersRefreshTokensEntity extends BaseUpdateRelationEntity {
   @Column({ type: 'varchar', name: 'token', length: 255 })
   token: string;
 
-  @Column({ type: 'datetime', name: 'expired_at' })
+  @Column({ type: 'datetime', name: 'expired_at', precision: 6 })
   expired_at: Date;
 }

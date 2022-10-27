@@ -30,6 +30,7 @@ export class BaseDeleteMasterEntity extends BaseUpdateMasterEntity {
   @Column({
     type: 'datetime',
     name: 'deleted_at',
+    precision: 6,
     nullable: true,
     default: null,
   })

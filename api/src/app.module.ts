@@ -18,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: process.env.RDBMS_PASSWORD,
       database: process.env.RDBMS_DATABASE,
       entities: [`${__dirname}/./entities/**.entity.{ts,js}`],
+      synchronize: true,
     }),
   ],
   providers: [AppService],

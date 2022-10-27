@@ -43,6 +43,7 @@ export class DormantsUsersEntity extends BaseUpdateMasterEntity {
   @Column({
     type: 'datetime',
     name: 'last_connected_at',
+    precision: 6,
     nullable: true,
     default: null,
   })
