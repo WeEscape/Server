@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as ormconfig from './ormconfig';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import * as ormconfig from './ormconfig';
     TaskModule,
     AuthModule,
     TypeOrmModule.forRoot(ormconfig),
+    ConfigModule.forRoot({ isGlobal: true }),
   ],
   providers: [AppService],
 })
