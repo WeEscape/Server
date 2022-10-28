@@ -1,11 +1,11 @@
-version: '3'
+version: "3"
 services:
   rdbms:
     container_name: rdbms
     image: mariadb:10
     restart: always
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - rdbms:/var/lib/mysql
       - ./docker/rdbms/initdb:/docker-entrypoint-initdb.d
@@ -38,7 +38,7 @@ services:
       dockerfile: Dockerfile
       context: ./docker/proxy
     ports:
-      - 3000:80
+      - 8080:80
     depends_on:
       - api
 volumes:
