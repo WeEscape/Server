@@ -1,9 +1,11 @@
+import { CreateUserDto } from './../user/user.dto';
 import { Users } from 'src/user/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
+import { AuthInfoDto } from './auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,25 +14,8 @@ export class AuthService {
     @InjectRepository(Users)
     private usersRepository: Repository<Users>,
   ) {}
-  async kakaoLogin(code: string): Promise<any> {
-    const redir = 'http://localhost:8080/auth/callback/kakao';
-    const kakaourl = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.KAKAO_KEY}&redirect_uri=${redir}&code=${code}`;
 
-    try {
-      const response = await axios.post(kakaourl);
-      const { access_token } = response.data;
-      const userInfo = await axios.get('https://kapi.kakao.com/v2/user/me', {
-        headers: { Authorization: `Bearer ${access_token}` },
-      });
-      const { nickname, profile_image_url } =
-        userInfo.data.kakao_account.profile;
-      const { email } = userInfo.data.kakao_account;
-    } catch (err) {
-      return err;
-    }
-  }
-
-  // 토큰 발급 로직
+  // 토큰 발급
   async createToken(email: any): Promise<any> {
     const payload = { email };
     const accessToken = await this.jwtService.sign(payload);
@@ -43,36 +28,66 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async getUser(email: string) {
-    const user = await this.usersRepository.findOne({
+  getUser(email: string) {
+    const user = this.usersRepository.findOne({
       where: { email },
     });
-    return user;
+    return user ? true : false;
   }
 
-  // 카카오 로그인 로직
-  async kakao(token: string): Promise<any> {
-    const kakaourl = 'https://kapi.kakao.com/v2/user/me';
+  createUser(profile: CreateUserDto) {
+    this.usersRepository.save(profile);
+  }
+
+  // 소셜 체크
+  async socialLogin(data: AuthInfoDto): Promise<any> {
+    const type = data.social_type;
     try {
-      const userInfo = await axios.get(kakaourl, {
-        headers: { Authorization: `Bearer ${token}` },
+      const profile =
+        type === 'kakao'
+          ? await this.kakao(data)
+          : type === 'google'
+          ? await this.google(data)
+          : await this.apple(data);
+
+      const token = await this.createToken(profile.email);
+      if (!this.getUser(profile.email)) this.createUser(profile);
+      return { ...profile, ...token };
+    } catch (err) {
+      return err;
+    }
+  }
+
+  // 카카오 로그인
+  async kakao(data: AuthInfoDto): Promise<any> {
+    try {
+      const userInfo = await axios.get(process.env.KAKAO_URL, {
+        headers: { Authorization: `Bearer ${data.access_token}` },
       });
       const { nickname: name, profile_image_url: profile_url } =
         userInfo.data.kakao_account.profile;
       const { email } = userInfo.data.kakao_account;
-      const accesstoken = await this.createToken(email);
-      return { name, profile_url, email, accesstoken };
+      return { name, profile_url, email, social_type: data['social_type'] };
     } catch (err) {
       return err;
     }
   }
 
-  // 로그인 토큰 테스트 로직
-  async logintest(data: string) {
-    try {
-      return await this.createToken(data);
-    } catch (err) {
-      return err;
-    }
+  // 구글
+  async google(data: AuthInfoDto): Promise<any> {
+    return 'hello';
   }
+
+  // 애플
+  async apple(data: AuthInfoDto): Promise<any> {
+    return 'apple';
+  }
+  // 로그인 토큰 테스트 로직
+  // async logintest(data: string) {
+  //   try {
+  //     return await this.createToken(data);
+  //   } catch (err) {
+  //     return err;
+  //   }
+  // }
 }
