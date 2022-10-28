@@ -14,9 +14,9 @@ export class Users {
   @Column('varchar', { name: 'profile_url', length: 255 })
   profile_url: string;
 
-  //   @Column('varchar', { name: 'profile_color', length: 10 })
-  //   profile_color: string;
+  @Column('varchar', { name: 'profile_color', length: 10 })
+  profile_color: string;
 
-  //   @Column('varchar', { name: 'social_type', length: 10 })
-  //   social_type: string;
+  @Column('varchar', { name: 'social_type', length: 10 })
+  social_type: string;
 }
