@@ -1,10 +1,13 @@
 import { Column, Entity } from 'typeorm';
 import { BaseUpdateMasterEntity } from './Base.entity';
 
-export type RepeatCycle = '1D' | '1W' | '1D';
+export type RepeatCycle = '1D' | '1W' | '1M';
 
 @Entity('tasks')
 export class TasksEntity extends BaseUpdateMasterEntity {
+  @Column({ type: 'varchar', name: 'title', length: 30 })
+  title: string;
+
   @Column({ type: 'int', name: 'category_id' })
   category_id: number;
 
@@ -35,7 +38,12 @@ export class TasksEntity extends BaseUpdateMasterEntity {
   })
   end_repeat_at: Date | null;
 
-  @Column({ type: 'datetime', name: 'excute_at', precision: 6 })
+  @Column({
+    type: 'datetime',
+    name: 'excute_at',
+    precision: 6,
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
   excute_at: Date;
 
   @Column({

@@ -7,6 +7,6 @@ export class PlacesEntity extends BaseUpdateMasterEntity {
   @Column({ type: 'varchar', name: 'invite_code', length: 100 })
   invite_code: string;
 
-  @Column({ type: 'varchar', name: 'name', length: 30 })
-  name: string;
+  @Column({ type: 'varchar', name: 'title', length: 30 })
+  title: string;
 }

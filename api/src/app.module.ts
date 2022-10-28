@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
-import { TaskModule } from './task/task.module';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
     UserModule,
-    TaskModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mariadb',
@@ -20,7 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [`${__dirname}/./entities/**.entity.{ts,js}`],
       synchronize: true,
     }),
+    TasksModule,
   ],
-  providers: [AppService],
 })
 export class AppModule {}

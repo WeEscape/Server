@@ -21,6 +21,6 @@ async function dobbyServer() {
     }),
   );
 
-  await app.listen(3000);
+  await app.listen(process.env.THIS_API_SERVER_PORT);
 }
 dobbyServer();
