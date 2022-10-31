@@ -10,7 +10,7 @@ services:
       - rdbms:/var/lib/mysql
       - ./docker/rdbms/initdb:/docker-entrypoint-initdb.d
     env_file:
-      - .env
+      - ./api/.env
     environment:
       - MYSQL_ROOT_PASSWORD=${RDBMS_ROOT_PASSWORD}
       - MYSQL_DATABASE=${RDBMS_DATABASE}
@@ -25,7 +25,7 @@ services:
       - .:/app
       - /app/api/node_modules
     env_file:
-      - .env
+      - ./api/.env
     environment:
       - THIS_API_SERVER_PORT=${THIS_API_SERVER_PORT}
       - RDBMS_HOST=${RDBMS_HOST}
